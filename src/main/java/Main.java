@@ -9,12 +9,28 @@ public class Main {
         String user;
         while(true) {
             System.out.print("$ ");
-            user = input.next();
-            if(user.equals("exit"))
+            user = input.nextLine();
+            String[] split =  user.split(" ");
+
+            if(split[0].equals("exit"))
             {
                 break;
             }
-            System.out.println(user+ ": command not found");
+            if(split[0].equals("echo")){
+                for(int i = 1; i<split.length; i++)
+                {
+
+                    System.out.print(split[i]);
+                    System.out.print(" ");
+                }
+
+            }
+            else
+            {
+                System.out.println(user+ ": command not found");
+            }
+            System.out.println();
+
 
         }
 
