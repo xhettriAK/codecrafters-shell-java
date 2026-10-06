@@ -10,25 +10,17 @@ public class Main {
         while(true) {
             System.out.print("$ ");
             user = input.nextLine();
-            String[] split =  user.split(" ");
 
-            if(split[0].equals("exit"))
+            if(user.equals("exit"))
             {
                 break;
             }
-            if(split[0].equals("echo")){
-                for(int i = 1; i<split.length; i++)
-                {
-
-                    System.out.print(split[i]);
-                    System.out.print(" ");
-                }
-                System.out.println();
-
-            }
-            else
+            if(user.startsWith("echo"))
             {
-                System.out.println(user+ ": command not found");
+                System.out.println(user.substring(5));
+            }
+            else{
+                System.out.println(user+": command not found");
             }
 
 
