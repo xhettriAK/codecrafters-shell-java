@@ -28,7 +28,7 @@ public class Main {
                 {
                     if(temp.equals(i))
                     {
-                        System.out.println(temp + " is a shell built in command");
+                        System.out.println(temp + " is a shell builtin");
                         check = true;
                         break;
                     }
