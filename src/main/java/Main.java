@@ -35,7 +35,7 @@ public class Main {
                 }
                 if(!check)
                 {
-                    System.out.println(user+": command not found");
+                    System.out.println(temp+": command not found");
                 }
             }
             else{
