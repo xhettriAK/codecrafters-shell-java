@@ -10,6 +10,10 @@ public class Main {
         while(true) {
             System.out.print("$ ");
             user = input.next();
+            if(user.equals("exit"))
+            {
+                break;
+            }
             System.out.println(user+ ": command not found");
 
         }
