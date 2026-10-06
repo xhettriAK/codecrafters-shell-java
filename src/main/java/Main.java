@@ -23,13 +23,14 @@ public class Main {
                     System.out.print(split[i]);
                     System.out.print(" ");
                 }
+                System.out.println();
 
             }
             else
             {
                 System.out.println(user+ ": command not found");
             }
-            System.out.println();
+
 
 
         }
