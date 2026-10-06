@@ -7,29 +7,29 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void checkFileExist(String user_argument) {
+    public static void FileExist(String userArgument) {
         String pathEnv = System.getenv("PATH");
         String[] paths = pathEnv.split(File.pathSeparator);
         boolean exit = false;
+
         for (var i : paths) {
-            String temp = i + "/" + user_argument;
+            String temp = i + "/" + userArgument;
             Path path = Paths.get(temp);
             if (Files.exists(path)) {
                 if (Files.isExecutable(path)) {
                     exit = true;
-                    System.out.println(user_argument + " is " + temp);
+                    System.out.println(userArgument + " is " + temp);
                     break;
                 }
             }
         }
+
         if (!exit) {
-            System.out.println(user_argument + ": not found");
+            System.out.println(userArgument + ": not found");
         }
     }
 
-
     public static void main(String[] args) throws Exception {
-        // TODO: Uncomment the code below to pass the first stage
 
         Scanner input = new Scanner(System.in);
         String user;
@@ -37,23 +37,23 @@ public class Main {
             System.out.print("$ ");
             user = input.nextLine();
 
-            if(user.equals("exit"))
-            {
+            if(user.equals("exit")) {
                 break;
             }
             String[] parts = user.split(" ",2 );
             String command = parts[0];
-            String user_argument = parts.length>1?parts[1]:" ";
+            String userArgument = parts.length>1?parts[1]:" ";
 
-            if(command.contains("echo")){
-                System.out.println(user_argument);
+            if(command.equals("echo")){
+                System.out.println(userArgument);
             }
-            else if(command.contains("type")) {
-                if (user_argument.contains("type") || user_argument.contains("exit") || user_argument.contains("echo")) {
-                    System.out.println(user_argument + " is a shell builtin");
+
+            else if(command.equals("type")) {
+                if (userArgument.equals("type") || userArgument.equals("exit") || userArgument.equals("echo")) {
+                    System.out.println(userArgument + " is a shell builtin");
                 }
                 else {
-                   checkFileExist(user_argument);
+                   FileExist(userArgument);
                 }
             }
             else{
