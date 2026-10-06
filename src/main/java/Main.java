@@ -6,7 +6,6 @@ public class Main {
         // TODO: Uncomment the code below to pass the first stage
 
         Scanner input = new Scanner(System.in);
-        String[] built_in_commands = {"type","echo","exit"};
         String user;
         while(true) {
             System.out.print("$ ");
@@ -16,37 +15,24 @@ public class Main {
             {
                 break;
             }
-            if(user.startsWith("echo"))
-            {
-                System.out.println(user.substring(5));
+            String[] parts = user.split(" ",2 );
+            String command = parts[0];
+            String user_argument = parts.length>1?parts[1]:" ";
+
+            if(command.contains("echo")){
+                System.out.println(user_argument);
             }
-            else if(user.startsWith(built_in_commands[0]))
-            {
-                String temp = user.substring(5);
-                boolean check = false;
-                for(var i : built_in_commands)
-                {
-                    if(temp.equals(i))
-                    {
-                        System.out.println(temp + " is a shell builtin");
-                        check = true;
-                        break;
-                    }
+            else if(command.contains("type")) {
+                if(user_argument.contains("type")|| user_argument.contains("exit")||user_argument.contains("echo")){
+                    System.out.println(user_argument+" is a shell builtin");
                 }
-                if(!check)
-                {
-                    System.out.println(temp+": not found");
+                else{
+                    System.out.println(user_argument+": not found");
                 }
             }
             else{
                 System.out.println(user+": command not found");
             }
-
-
-
         }
-
-
     }
-
 }
