@@ -1,3 +1,8 @@
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -23,16 +28,35 @@ public class Main {
                 System.out.println(user_argument);
             }
             else if(command.contains("type")) {
-                if(user_argument.contains("type")|| user_argument.contains("exit")||user_argument.contains("echo")){
-                    System.out.println(user_argument+" is a shell builtin");
+                if (user_argument.contains("type") || user_argument.contains("exit") || user_argument.contains("echo")) {
+                    System.out.println(user_argument + " is a shell builtin");
                 }
-                else{
-                    System.out.println(user_argument+": not found");
+
+                String pathEnv = System.getenv("PATH");
+                String[] paths = pathEnv.split(File.pathSeparator);
+                boolean exit = false;
+                for (var i : paths) {
+                    String temp = i + "/" + user_argument;
+                    Path path = Paths.get(temp);
+                    if (Files.exists(path)) {
+                        if (Files.isExecutable(path)) {
+                            exit = true;
+                            System.out.println(user_argument+" is "+ temp);
+                            break;
+                        }
+                    }
+                }
+                if(!exit)
+                {
+                    System.out.println(user_argument+": no found");
                 }
             }
             else{
                 System.out.println(user+": command not found");
+
             }
         }
+
     }
 }
+
