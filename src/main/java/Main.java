@@ -48,7 +48,7 @@ public class Main {
                 }
                 if(!exit)
                 {
-                    System.out.println(user_argument+": no found");
+                    System.out.println(user_argument+": not found");
                 }
             }
             else{
