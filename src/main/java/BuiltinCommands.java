@@ -3,7 +3,7 @@ import java.io.File;
 public class BuiltinCommands {
 
     public final static  String[]listCommands= {"echo","exit","pwd","type","cd"};
-
+    private static String path= new File("").getAbsolutePath();
     public static boolean isThisBuiltin(String userArgument )
     {
         for(var command: listCommands) {
@@ -19,7 +19,7 @@ public class BuiltinCommands {
             case "echo" -> echoFunction(userArgument);
             case "type" -> typeFunction(userArgument);
             case "pwd" -> pwdFunction();
-            case "cd" ->cdFunction();
+            case "cd" ->cdFunction(userArgument);
         }
     }
     public static void echoFunction(String userArgument)
@@ -29,7 +29,6 @@ public class BuiltinCommands {
 
     public static void pwdFunction()
     {
-        String path = new File("").getAbsolutePath();
         System.out.println(path);
     }
     public static void typeFunction(String userArgument)
@@ -40,9 +39,16 @@ public class BuiltinCommands {
             FindPath.filePath(userArgument);
         }
     }
-    public static void cdFunction()
+    public static void cdFunction(String userArgument)
     {
-        System.out.println("t");
-        //placeholder for now, will implement function
+        File thiss = new File(userArgument);
+        if(!thiss.isDirectory())
+        {
+            System.out.println("cd: " +userArgument +": No such file or directory" );
+        }
+        else {
+           path= new File(userArgument).getAbsolutePath();
+        }
+
     }
 }
