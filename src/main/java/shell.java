@@ -101,6 +101,7 @@ public class shell {
                     filePath(userArgument);
                 }
             }
+
             else {
                 if (!createProcess(command, commandArgument)) {
                     System.out.println(command + ": command not found");
