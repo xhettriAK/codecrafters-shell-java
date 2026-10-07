@@ -101,7 +101,12 @@ public class shell {
                     filePath(userArgument);
                 }
             }
+            else if(command.equals("pwd"))
+            {
+                String path = new  File("").getAbsolutePath();
 
+                System.out.println(path);
+            }
             else {
                 if (!createProcess(command, commandArgument)) {
                     System.out.println(command + ": command not found");
