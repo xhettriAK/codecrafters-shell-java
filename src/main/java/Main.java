@@ -27,7 +27,7 @@ public class Main {
 
        return false;
     }
-public static boolean createProcess(String command, String[] userArgument)
+public static boolean createProcess(String command, String[]  commandArgument)
 {
     String pathEnv = System.getenv("PATH");
     String[] paths = pathEnv.split(File.pathSeparator);
@@ -38,7 +38,7 @@ public static boolean createProcess(String command, String[] userArgument)
         if (Files.exists(path)) {
             if (Files.isExecutable(path)) {
                 try {
-                    ProcessBuilder pb = new ProcessBuilder(command, Arrays.toString(userArgument));
+                    ProcessBuilder pb = new ProcessBuilder(commandArgument);
                     Process p = pb.start();
                     try (BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
                         String line;
@@ -87,7 +87,7 @@ public static boolean createProcess(String command, String[] userArgument)
                 }
             }
             else{
-                if(!createProcess(command,userArgument)){
+                if(!createProcess(command,parts)){
                     System.out.println(command+": command not found");
                 }
             }
