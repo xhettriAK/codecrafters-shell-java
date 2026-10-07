@@ -61,10 +61,21 @@ public class shell {
         return false;
     }
 
+    public static boolean equal(String userArgument,String...builtInCommands )
+    {
+        for(var command: builtInCommands) {
+            if(userArgument.equals(command)) {
+                return true;
+            }
+        }
+        return false;
+
+    }
     public static void main(String[] args) throws Exception {
 
         Scanner input = new Scanner(System.in);
         String user;
+        String[] builtInCommands = {"echo","exit","pwd","type"};
         while (true) {
             System.out.print("$ ");
             user = input.nextLine();
@@ -80,13 +91,17 @@ public class shell {
 
             if (command.equals("echo")) {
                 System.out.println(userArgument);
-            } else if (command.equals("type")) {
-                if (userArgument.equals("type") || userArgument.equals("exit") || userArgument.equals("echo")) {
-                    System.out.println(userArgument + " is a shell builtin");
-                } else {
+            }
+            else if (command.equals("type")) {
+                if(equal(userArgument,builtInCommands))
+                {
+                    System.out.println(userArgument+" is a shell builtin");
+                }
+                else {
                     filePath(userArgument);
                 }
-            } else {
+            }
+            else {
                 if (!createProcess(command, commandArgument)) {
                     System.out.println(command + ": command not found");
                 }
