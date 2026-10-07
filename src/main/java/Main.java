@@ -74,7 +74,9 @@ public static boolean createProcess(String command, String[]  commandArgument)
             if(user.equals("exit")) {
                 break;
             }
-            String[] parts = user.split(" " );
+            String[] commandArgument = user.split(" " );
+            String[] parts = user.split(" ",2);
+
             String command = parts[0];
             String userArgument = parts.length>1? parts[1]:" ";
 
@@ -91,7 +93,7 @@ public static boolean createProcess(String command, String[]  commandArgument)
                 }
             }
             else{
-                if(!createProcess(command,parts)){
+                if(!createProcess(command,commandArgument)){
                     System.out.println(command+": command not found");
                 }
             }
