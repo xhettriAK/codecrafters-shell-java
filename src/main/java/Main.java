@@ -1,4 +1,7 @@
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -7,7 +10,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void FileExist(String userArgument) {
+    public static boolean FileExist(String userArgument) {
         String pathEnv = System.getenv("PATH");
         String[] paths = pathEnv.split(File.pathSeparator);
         boolean exit = false;
@@ -17,17 +20,44 @@ public class Main {
             Path path = Paths.get(temp);
             if (Files.exists(path)) {
                 if (Files.isExecutable(path)) {
-                    exit = true;
-                    System.out.println(userArgument + " is " + temp);
-                    break;
+                    return true;
                 }
             }
         }
 
-        if (!exit) {
-            System.out.println(userArgument + ": not found");
+       return false;
+    }
+public static boolean createProcess(String command, String userArgument)
+{
+    String pathEnv = System.getenv("PATH");
+    String[] paths = pathEnv.split(File.pathSeparator);
+    for(var i: paths)
+    {
+        String temp = i + "/" + command;
+        Path path = Paths.get(temp);
+        if (Files.exists(path)) {
+            if (Files.isExecutable(path)) {
+                try {
+                    ProcessBuilder pb = new ProcessBuilder(command, userArgument);
+                    Process p = pb.start();
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            System.out.println(line);
+                        }
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                    p.waitFor();
+                } catch (IOException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            return true;
         }
     }
+    return false;
+}
 
     public static void main(String[] args) throws Exception {
 
@@ -57,7 +87,9 @@ public class Main {
                 }
             }
             else{
-                System.out.println(user+": command not found");
+                if(!createProcess(command,userArgument)){
+                    System.out.println(command+": command not found");
+                }
             }
         }
     }
