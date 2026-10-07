@@ -27,7 +27,7 @@ public class Main {
 
        return false;
     }
-public static boolean createProcess(String command, String userArgument)
+public static boolean createProcess(String command, String[] userArgument)
 {
     String pathEnv = System.getenv("PATH");
     String[] paths = pathEnv.split(File.pathSeparator);
@@ -38,7 +38,7 @@ public static boolean createProcess(String command, String userArgument)
         if (Files.exists(path)) {
             if (Files.isExecutable(path)) {
                 try {
-                    ProcessBuilder pb = new ProcessBuilder(command, userArgument);
+                    ProcessBuilder pb = new ProcessBuilder(command, Arrays.toString(userArgument));
                     Process p = pb.start();
                     try (BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
                         String line;
@@ -70,20 +70,20 @@ public static boolean createProcess(String command, String userArgument)
             if(user.equals("exit")) {
                 break;
             }
-            String[] parts = user.split(" ",2 );
+            String[] parts = user.split(" " );
             String command = parts[0];
-            String userArgument = parts.length>1?parts[1]:" ";
+            String[] userArgument = Arrays.copyOfRange(parts,1,parts.length-1);
 
             if(command.equals("echo")){
-                System.out.println(userArgument);
+                System.out.println(Arrays.toString(userArgument));
             }
 
             else if(command.equals("type")) {
-                if (userArgument.equals("type") || userArgument.equals("exit") || userArgument.equals("echo")) {
-                    System.out.println(userArgument + " is a shell builtin");
+                if (userArgument[0].equals("type") || userArgument[0].equals("exit") || userArgument[0].equals("echo")) {
+                    System.out.println(userArgument[0]+ " is a shell builtin");
                 }
                 else {
-                   FileExist(userArgument);
+                   FileExist(userArgument[0]);
                 }
             }
             else{
