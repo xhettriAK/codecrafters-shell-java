@@ -5,12 +5,11 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
 
-    public static boolean FileExist(String userArgument) {
+    public static void FileExist(String userArgument) {
         String pathEnv = System.getenv("PATH");
         String[] paths = pathEnv.split(File.pathSeparator);
         boolean exit = false;
@@ -20,12 +19,17 @@ public class Main {
             Path path = Paths.get(temp);
             if (Files.exists(path)) {
                 if (Files.isExecutable(path)) {
-                    return true;
+                    exit = true;
+                    System.out.println(userArgument+" is "+temp);
+                    break;
                 }
             }
         }
+        if(!exit)
+        {
+            System.out.println(userArgument+": not found");
+        }
 
-       return false;
     }
 public static boolean createProcess(String command, String[]  commandArgument)
 {
@@ -72,18 +76,18 @@ public static boolean createProcess(String command, String[]  commandArgument)
             }
             String[] parts = user.split(" " );
             String command = parts[0];
-            String[] userArgument = Arrays.copyOfRange(parts,1,parts.length-1);
+            String userArgument = parts.length>1? parts[1]:" ";
 
             if(command.equals("echo")){
-                System.out.println(Arrays.toString(userArgument));
+                System.out.println(userArgument);
             }
 
             else if(command.equals("type")) {
-                if (userArgument[0].equals("type") || userArgument[0].equals("exit") || userArgument[0].equals("echo")) {
-                    System.out.println(userArgument[0]+ " is a shell builtin");
+                if (userArgument.equals("type") || userArgument.equals("exit") || userArgument.equals("echo")) {
+                    System.out.println(userArgument+ " is a shell builtin");
                 }
                 else {
-                   FileExist(userArgument[0]);
+                   FileExist(userArgument);
                 }
             }
             else{
