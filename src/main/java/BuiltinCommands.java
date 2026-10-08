@@ -48,15 +48,20 @@ public class BuiltinCommands {
     public static void cdFunction(String userArgument)
     {
         Path tempPath;
-        if("~".equals(userArgument)){
-            tempPath = Path.of( System.getenv("HOME"));
+        String username = System.getenv("USER");
+
+        if(userArgument.equals("~"+username)) {
+            tempPath = Path.of(System.getenv("HOME"));
+        }
+        else if(userArgument.startsWith("~")){
+            tempPath = Path.of( System.getenv("HOME")+userArgument.substring(1));
         }
         else{
-         tempPath    = Paths.get(userArgument);
+            tempPath    = Paths.get(userArgument);
         }
-
         Path absolutePath = Path.of(path).resolve(tempPath);
         boolean isExist = false;
+
         try{
             absolutePath = absolutePath.toRealPath();
             isExist = true;
@@ -64,8 +69,7 @@ public class BuiltinCommands {
             System.out.println("cd: " +userArgument +": No such file or directory");
         }
         if(isExist){
-       
-           path = absolutePath.toString();
+            path = absolutePath.toString();
         }
     }
 }
