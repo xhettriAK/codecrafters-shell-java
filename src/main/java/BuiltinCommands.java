@@ -8,8 +8,8 @@ import java.nio.file.Paths;
 public class BuiltinCommands {
 
     public final static  String[]listCommands= {"echo","exit","pwd","type","cd"};
-    private static Path p = Path.of("");
-    private static String path= p.toAbsolutePath().toString();
+    
+    private static String path= Path.of("").toAbsolutePath().toString();
     public static boolean isThisBuiltin(String userArgument )
     {
         for(var command: listCommands) {
@@ -47,18 +47,25 @@ public class BuiltinCommands {
     }
     public static void cdFunction(String userArgument)
     {
-        Path tempPath = Paths.get(userArgument);
-        Path absolutePath = p.resolve(tempPath);
-        boolean isDirectory = false;
+        Path tempPath;
+        if("~".equals(userArgument)){
+            tempPath = Path.of( System.getenv("HOME"));
+        }
+        else{
+         tempPath    = Paths.get(userArgument);
+        }
+
+        Path absolutePath = Path.of(path).resolve(tempPath);
+        boolean isExist = false;
         try{
             absolutePath = absolutePath.toRealPath();
-            isDirectory = true;
+            isExist = true;
         } catch (IOException e) {
             System.out.println("cd: " +userArgument +": No such file or directory");
         }
-        if(isDirectory){
-           p = absolutePath;
-           path = p.toString();
+        if(isExist){
+       
+           path = absolutePath.toString();
         }
     }
 }
