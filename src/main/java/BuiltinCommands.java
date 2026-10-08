@@ -1,9 +1,15 @@
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class BuiltinCommands {
 
     public final static  String[]listCommands= {"echo","exit","pwd","type","cd"};
-    private static String path= new File("").getAbsolutePath();
+    private static Path p = Path.of("");
+    private static String path= p.toAbsolutePath().toString();
     public static boolean isThisBuiltin(String userArgument )
     {
         for(var command: listCommands) {
@@ -41,14 +47,18 @@ public class BuiltinCommands {
     }
     public static void cdFunction(String userArgument)
     {
-        File thiss = new File(userArgument);
-        if(!thiss.isDirectory())
-        {
-            System.out.println("cd: " +userArgument +": No such file or directory" );
+        Path tempPath = Paths.get(userArgument);
+        Path absolutePath = p.resolve(tempPath);
+        boolean isDirectory = false;
+        try{
+            absolutePath = absolutePath.toRealPath();
+            isDirectory = true;
+        } catch (IOException e) {
+            System.out.println("cd: " +userArgument +": No such file or directory");
         }
-        else {
-           path= new File(userArgument).getAbsolutePath();
+        if(isDirectory){
+           p = absolutePath;
+           path = p.toString();
         }
-
     }
 }
