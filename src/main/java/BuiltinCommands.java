@@ -70,7 +70,7 @@ public class BuiltinCommands {
 
         }
         userArgument= userArgumentBuilder.toString();
-        System.out.print(userArgument);
+        System.out.println(userArgument);
 //        if(insideQuote)
 //        {
 //            StringBuilder userArgumentBuilder2 = new StringBuilder(userArgumentBuilder.toString());
