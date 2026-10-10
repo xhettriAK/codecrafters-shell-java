@@ -1,9 +1,5 @@
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class BuiltinCommands {
 
@@ -30,8 +26,65 @@ public class BuiltinCommands {
     }
     public static void echoFunction(String userArgument)
     {
+        StringBuilder userArgumentBuilder = new StringBuilder();
+        char  quoteMatch = ' ';
+        boolean spaceReserved = false;
+        int spaceReservedLoop = 0;
+        int firstQuote = 0;
+        for(int i = 0; i<userArgument.length(); i++)
+        {
+            char c = userArgument.charAt(i);
+            if(c== '\'')
+            {
+                if(firstQuote == 0)
+                {
+                    quoteMatch = c;
+                    spaceReserved = true;
+                    firstQuote++;
+                }
+                else {
+                    spaceReserved = false;
+                    firstQuote = 0;
+                    quoteMatch=' ';
+                }
+            }
+            else if (c == ' ' && spaceReserved)
+            {
+                userArgumentBuilder.append(c);
+            }
+            else if(c == ' ')
+            {
+                //space resevered for only one
+                if(spaceReservedLoop==0) {
+                    userArgumentBuilder.append(c);
+                    spaceReservedLoop++;
+                }
+
+            }
+            else{
+
+                userArgumentBuilder.append(c);
+                spaceReservedLoop=0;
+
+            }
+
+        }
+        userArgument= userArgumentBuilder.toString();
         System.out.println(userArgument);
+//        if(insideQuote)
+//        {
+//            StringBuilder userArgumentBuilder2 = new StringBuilder(userArgumentBuilder.toString());
+//            Scanner n = new Scanner(System.in);
+//            String temp = "";
+//            while (!temp.endsWith(String.valueOf(checker))) {
+//                temp = n.nextLine();
+//                userArgumentBuilder.append("\n").append(temp);
+//
+//            }
+//
+//        }
     }
+
 
     public static void pwdFunction()
     {
@@ -57,7 +110,7 @@ public class BuiltinCommands {
             tempPath = Path.of( System.getenv("HOME")+userArgument.substring(1));
         }
         else{
-            tempPath    = Paths.get(userArgument);
+            tempPath    = Path.of(userArgument);
         }
         Path absolutePath = Path.of(path).resolve(tempPath);
         boolean isExist = false;

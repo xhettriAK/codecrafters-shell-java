@@ -1,6 +1,7 @@
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class FindPath {
@@ -9,7 +10,7 @@ public class FindPath {
         String[] paths = pathEnv.split(File.pathSeparator);
         for (var i : paths) {
             String temp = i + "/" + filename;
-            java.nio.file.Path path = Paths.get(temp);
+            Path path = Path.of(temp);
             if (Files.exists(path)) {
                 if (Files.isExecutable(path)) {
                     return temp;
